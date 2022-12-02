@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         productsRecyclerView = findViewById(R.id.product_list);
         addProductButton = findViewById(R.id.add_product_fab);
 
-        productsAdapter = new ProductsAdapter(this, fetchedProducts);
+        productsAdapter = new ProductsAdapter(this, realm, fetchedProducts);
         productsRecyclerView.setAdapter(productsAdapter);
         productsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
