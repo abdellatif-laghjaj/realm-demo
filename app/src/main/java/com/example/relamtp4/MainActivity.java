@@ -6,7 +6,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import com.example.relamtp4.adpaters.ProductsAdapter;
 import com.example.relamtp4.models.Product;
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView productsRecyclerView;
     private ExtendedFloatingActionButton addProductButton;
     private ProductsAdapter productsAdapter;
+    private ImageView noProductsImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,14 @@ public class MainActivity extends AppCompatActivity {
 
         productsRecyclerView = findViewById(R.id.product_list);
         addProductButton = findViewById(R.id.add_product_fab);
+        noProductsImage = findViewById(R.id.no_products);
+
+        //check if there is no products
+        if (fetchedProducts.size() == 0) {
+            noProductsImage.setVisibility(View.VISIBLE);
+        } else {
+            noProductsImage.setVisibility(View.GONE);
+        }
 
         productsAdapter = new ProductsAdapter(this, realm, fetchedProducts);
         productsRecyclerView.setAdapter(productsAdapter);

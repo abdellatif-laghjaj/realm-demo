@@ -13,10 +13,11 @@
 
     <ImageView
         android:id="@+id/no_products"
-        android:layout_width="wrap_content"
+        android:layout_width="200dp"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:src="@drawable/no_product" />
+        android:src="@drawable/no_product"
+        android:visibility="gone" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/add_product_fab"
