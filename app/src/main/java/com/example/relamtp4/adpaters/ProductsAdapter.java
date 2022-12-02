@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar;
 import java.util.ArrayList;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 
 public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyViewHolder> {
 
@@ -46,13 +47,14 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
             Snackbar.make(v, "Are you sure you want to delete this product?", Snackbar.LENGTH_LONG)
                     .setAction("Yup", v1 -> {
                         //delete product from realm
-                        realm.executeTransaction(realm -> {
-                            product.deleteFromRealm();
-                        });
-                        //remove product from the list
-                        products.remove(position);
-                        //notify adapter that the data has changed
-                        notifyDataSetChanged();
+                        try {
+                            realm.executeTransaction(realm -> {
+                                Product productToDelete = realm.where(Product.class).equalTo("id", product.getId()).findFirst();
+                                productToDelete.deleteFromRealm();
+                            });
+                        } finally {
+                            realm.close();
+                        }
                     }).show();
         });
     }

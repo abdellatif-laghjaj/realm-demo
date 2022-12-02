@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.UUID;
 
 import io.realm.Realm;
+import io.realm.RealmConfiguration;
 import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,8 +32,12 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        RealmConfiguration config = new RealmConfiguration.Builder()
+                .allowWritesOnUiThread(true)
+                .allowQueriesOnUiThread(true)
+                .build();
         Realm.init(this);
-        realm = Realm.getDefaultInstance();
+        realm = Realm.getInstance(config);
 
         ArrayList<Product> fetchedProducts = getProducts();
 
