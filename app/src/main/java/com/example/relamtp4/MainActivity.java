@@ -1,18 +1,21 @@
 package com.example.relamtp4;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.os.Bundle;
 import android.widget.Button;
 
+import com.example.relamtp4.adpaters.ProductsAdapter;
 import com.example.relamtp4.models.Product;
 import com.example.relamtp4.models.Purchase;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.textfield.TextInputEditText;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import io.realm.Realm;
@@ -22,15 +25,23 @@ public class MainActivity extends AppCompatActivity {
     private Realm realm;
     private RecyclerView productsRecyclerView;
     private ExtendedFloatingActionButton addProductButton;
+    private ProductsAdapter productsAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Realm.init(this);
+        realm = Realm.getDefaultInstance();
+
+        ArrayList<Product> fetchedProducts = getProducts();
 
         productsRecyclerView = findViewById(R.id.product_list);
         addProductButton = findViewById(R.id.add_product_fab);
+
+        productsAdapter = new ProductsAdapter(this, fetchedProducts);
+        productsRecyclerView.setAdapter(productsAdapter);
+        productsRecyclerView.setLayoutManager(new LinearLayoutManager(this));
 
         addProductButton.setOnClickListener(v -> {
             Dialog dialog = new Dialog(this);
@@ -55,8 +66,6 @@ public class MainActivity extends AppCompatActivity {
 
             dialog.show();
         });
-
-        realm = Realm.getDefaultInstance();
 //        realm.executeTransaction(new Realm.Transaction() {
 //            @Override
 //            public void execute(Realm realm) {
@@ -64,21 +73,16 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
 
-        realm.beginTransaction();
-        long id = UUID.randomUUID().getMostSignificantBits();
-        Product product = realm.createObject(Product.class, id);
-        product.setName("Product 1");
-        product.setPrice(10.0);
-        product.setImage(R.drawable.ic_launcher_background);
-
-        Purchase purchase = realm.createObject(Purchase.class);
-        purchase.addProduct(product);
-        realm.commitTransaction();
-
-        RealmResults<Product> product_list = realm.where(Product.class).findAll().sort("price");
-        for (Product p : product_list) {
-            //TODO: Do something with the product
-        }
+//        realm.beginTransaction();
+//        long id = UUID.randomUUID().getMostSignificantBits();
+//        Product product = realm.createObject(Product.class, id);
+//        product.setName("Product 1");
+//        product.setPrice(10.0);
+//        product.setImage(R.drawable.ic_launcher_background);
+//
+//        Purchase purchase = realm.createObject(Purchase.class);
+//        purchase.addProduct(product);
+//        realm.commitTransaction();
     }
 
     private void addProduct(String name, double price) {
@@ -98,5 +102,14 @@ public class MainActivity extends AppCompatActivity {
         }, error -> {
             Snackbar.make(productsRecyclerView, "Error adding product", Snackbar.LENGTH_LONG).show();
         });
+    }
+
+    private ArrayList<Product> getProducts() {
+        ArrayList<Product> products = new ArrayList<>();
+        RealmResults<Product> product_list = realm.where(Product.class).findAll();
+        for (Product p : product_list) {
+            products.add(p);
+        }
+        return products;
     }
 }
