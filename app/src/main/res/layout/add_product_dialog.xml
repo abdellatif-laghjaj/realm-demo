@@ -39,7 +39,7 @@
         android:hint="Product price">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/product_name_input"
+            android:id="@+id/product_price_input"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:inputType="numberDecimal" />
@@ -47,7 +47,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <Button
-        android:id="@+id/elevatedButton"
+        android:id="@+id/add_product_button"
         style="@style/Widget.Material3.Button.ElevatedButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

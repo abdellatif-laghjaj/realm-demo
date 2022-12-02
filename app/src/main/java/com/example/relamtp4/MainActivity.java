@@ -5,10 +5,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.widget.Button;
 
 import com.example.relamtp4.models.Product;
 import com.example.relamtp4.models.Purchase;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.textfield.TextInputEditText;
 
 import java.util.UUID;
 
@@ -32,6 +35,24 @@ public class MainActivity extends AppCompatActivity {
         addProductButton.setOnClickListener(v -> {
             Dialog dialog = new Dialog(this);
             dialog.setContentView(R.layout.add_product_dialog);
+
+            //make dialog full width
+            int width = (int) (getResources().getDisplayMetrics().widthPixels * 0.95);
+            dialog.getWindow().setLayout(width, RecyclerView.LayoutParams.WRAP_CONTENT);
+
+            //initialize dialog views
+            TextInputEditText productNameEditText = dialog.findViewById(R.id.product_name_input);
+            TextInputEditText productPriceEditText = dialog.findViewById(R.id.product_price_input);
+            Button addProductButton = dialog.findViewById(R.id.add_product_button);
+
+            addProductButton.setOnClickListener(v1 -> {
+                String productName = productNameEditText.getText().toString();
+                double productPrice = Double.parseDouble(productPriceEditText.getText().toString());
+                int productImage = R.drawable.ic_launcher_background;
+
+                addProduct(productName, productPrice);
+            });
+
             dialog.show();
         });
 
@@ -58,5 +79,24 @@ public class MainActivity extends AppCompatActivity {
         for (Product p : product_list) {
             //TODO: Do something with the product
         }
+    }
+
+    private void addProduct(String name, double price) {
+        if (name.isEmpty() || price <= 0) {
+            Snackbar.make(productsRecyclerView, "Invalid product name or price", Snackbar.LENGTH_LONG).show();
+            return;
+        }
+
+        realm.executeTransactionAsync(realm -> {
+            long id = UUID.randomUUID().getMostSignificantBits();
+            Product product = realm.createObject(Product.class, id);
+            product.setName(name);
+            product.setPrice(price);
+            product.setImage(R.drawable.ic_launcher_background);
+        }, () -> {
+            Snackbar.make(productsRecyclerView, "Product added successfully", Snackbar.LENGTH_LONG).show();
+        }, error -> {
+            Snackbar.make(productsRecyclerView, "Error adding product", Snackbar.LENGTH_LONG).show();
+        });
     }
 }
