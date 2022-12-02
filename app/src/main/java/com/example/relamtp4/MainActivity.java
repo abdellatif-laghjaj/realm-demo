@@ -31,7 +31,8 @@ public class MainActivity extends AppCompatActivity {
 //        });
 
         realm.beginTransaction();
-        Product product = realm.createObject(Product.class, 1L);
+        long id = UUID.randomUUID().getMostSignificantBits();
+        Product product = realm.createObject(Product.class, id);
         product.setName("Product 1");
         product.setPrice(10.0);
         product.setImage(R.drawable.ic_launcher_background);
@@ -40,11 +41,9 @@ public class MainActivity extends AppCompatActivity {
         purchase.addProduct(product);
         realm.commitTransaction();
 
-        RealmResults<Product> results = realm.where(Product.class).findAll();
-        for (Product p : results) {
-            Dialog dialog = new Dialog(this);
-            dialog.setTitle(p.getName());
-            dialog.show();
+        RealmResults<Product> product_list = realm.where(Product.class).findAll().sort("price");
+        for (Product p : product_list) {
+            //TODO: Do something with the product
         }
     }
 }
