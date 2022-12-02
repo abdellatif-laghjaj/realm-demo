@@ -46,7 +46,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
     public void onBindViewHolder(MyViewHolder holder, int position) {
         Product product = products.get(position);
         holder.name.setText(product.getName());
-        holder.price.setText(String.valueOf(product.getPrice()));
+        holder.price.setText("$" + String.valueOf(product.getPrice()));
 
         //add click listener to the card view
         holder.itemView.setOnClickListener(v -> {
@@ -72,13 +72,22 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
 
             //add click listener to delete button
             deleteButton.setOnClickListener(v1 -> {
-                realm.executeTransaction(realm -> {
-                    Product productToDelete = realm.where(Product.class).equalTo("id", product.getId()).findFirst();
-                    productToDelete.deleteFromRealm();
-                    notifyItemRemoved(position);
-                    checkIfNoProducts(products, MainActivity.noProductsImage);
-                    dialog.dismiss();
-                });
+                try {
+                    realm.executeTransaction(realm -> {
+                        Product productToDelete = realm.where(Product.class).equalTo("id", product.getId()).findFirst();
+                        if (productToDelete != null) {
+                            productToDelete.deleteFromRealm();
+                            products.remove(position);
+                            notifyItemRemoved(position);
+                            notifyItemRangeChanged(position, products.size());
+                            checkIfNoProducts(products, MainActivity.noProductsImage);
+                            Snackbar.make(v, "Product deleted successfully", Snackbar.LENGTH_SHORT).show();
+                            dialog.dismiss();
+                        }
+                    });
+                } catch (Exception e) {
+                    Snackbar.make(v, "Error: " + e.getMessage(), Snackbar.LENGTH_LONG).show();
+                }
             });
 
             //add click listener to update button
