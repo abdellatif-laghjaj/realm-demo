@@ -24,4 +24,20 @@ public class Purchase extends RealmObject {
     public void setDate(Date date) {
         this.date = date;
     }
+
+    public void addProduct(Product product) {
+        products.add(product);
+    }
+
+    public void removeProduct(Product product) {
+        products.remove(product);
+    }
+
+    public double getTotal() {
+        double total = 0;
+        for (Product product : products) {
+            total += product.getPrice();
+        }
+        return total;
+    }
 }
