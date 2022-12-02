@@ -4,6 +4,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
+import com.example.relamtp4.models.Product;
+
 import io.realm.Realm;
 
 public class MainActivity extends AppCompatActivity {

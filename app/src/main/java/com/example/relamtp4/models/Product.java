@@ -1,14 +1,30 @@
 package com.example.relamtp4.models;
 
-public class Product {
+import io.realm.RealmObject;
+import io.realm.annotations.PrimaryKey;
+
+public class Product extends RealmObject {
+    @PrimaryKey
+    private long id;
     private String name;
     private double price;
     private int image;
+
+    public Product() {
+    }
 
     public Product(String name, double price, int image) {
         this.name = name;
         this.price = price;
         this.image = image;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 
     public String getName() {
