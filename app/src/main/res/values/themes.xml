@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.RelamTP4" parent="Theme.Material3.DayNight.NoActionBar">
+    <style name="Theme.RelamTP4" parent="Theme.Material3.Light.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">#03A9F4</item>
         <item name="colorPrimaryVariant">#2196F3</item>
