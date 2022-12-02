@@ -1,12 +1,14 @@
 package com.example.relamtp4;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.Dialog;
 import android.os.Bundle;
 
 import com.example.relamtp4.models.Product;
 import com.example.relamtp4.models.Purchase;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.UUID;
 
@@ -15,12 +17,23 @@ import io.realm.RealmResults;
 
 public class MainActivity extends AppCompatActivity {
     private Realm realm;
+    private RecyclerView productsRecyclerView;
+    private ExtendedFloatingActionButton addProductButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Realm.init(this);
+
+        productsRecyclerView = findViewById(R.id.product_list);
+        addProductButton = findViewById(R.id.add_product_fab);
+
+        addProductButton.setOnClickListener(v -> {
+            Dialog dialog = new Dialog(this);
+            dialog.setContentView(R.layout.add_product_dialog);
+            dialog.show();
+        });
 
         realm = Realm.getDefaultInstance();
 //        realm.executeTransaction(new Realm.Transaction() {
