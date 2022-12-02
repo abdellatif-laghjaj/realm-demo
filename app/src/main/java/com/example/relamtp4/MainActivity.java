@@ -99,6 +99,7 @@ public class MainActivity extends AppCompatActivity {
             product.setImage(R.drawable.ic_launcher_background);
         }, () -> {
             Snackbar.make(productsRecyclerView, "Product added successfully", Snackbar.LENGTH_LONG).show();
+            productsAdapter.notifyDataSetChanged();
         }, error -> {
             Snackbar.make(productsRecyclerView, "Error adding product", Snackbar.LENGTH_LONG).show();
         });
