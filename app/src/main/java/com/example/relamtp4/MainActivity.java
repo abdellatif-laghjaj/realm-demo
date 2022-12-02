@@ -23,8 +23,15 @@ public class MainActivity extends AppCompatActivity {
         Realm.init(this);
 
         realm = Realm.getDefaultInstance();
-        long product_id = UUID.randomUUID().getMostSignificantBits();
-        Product product = realm.createObject(Product.class, product_id);
+//        realm.executeTransaction(new Realm.Transaction() {
+//            @Override
+//            public void execute(Realm realm) {
+//                realm.deleteAll();
+//            }
+//        });
+
+        realm.beginTransaction();
+        Product product = realm.createObject(Product.class, 1L);
         product.setName("Product 1");
         product.setPrice(10.0);
         product.setImage(R.drawable.ic_launcher_background);

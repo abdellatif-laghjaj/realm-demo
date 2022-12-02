@@ -1,9 +1,11 @@
 package com.example.relamtp4.models;
 
+import io.realm.Realm;
 import io.realm.RealmObject;
 import io.realm.annotations.PrimaryKey;
 
 public class Product extends RealmObject {
+    Realm realm;
     @PrimaryKey
     private long id;
     private String name;
@@ -25,6 +27,12 @@ public class Product extends RealmObject {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public long getNextId() {
+        Number max_id = realm.where(Product.class).max("id");
+        if (max_id == null) return 1;
+        else return max_id.longValue() + 1;
     }
 
     public String getName() {
