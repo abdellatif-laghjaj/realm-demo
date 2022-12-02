@@ -44,15 +44,18 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
 
         //add click listener to the card view
         holder.itemView.setOnClickListener(v -> {
-            Snackbar.make(v, "Are you sure you want to delete this product?", Snackbar.LENGTH_LONG)
-                    .setAction("Yup", v1 -> {
-                        //delete product from realm
-                        realm.executeTransaction(realm -> {
-                            Product productToDelete = realm.where(Product.class).equalTo("id", product.getId()).findFirst();
-                            productToDelete.deleteFromRealm();
-                            notifyItemRemoved(position);
-                        });
-                    }).show();
+
+
+
+//            Snackbar.make(v, "Are you sure you want to delete this product?", Snackbar.LENGTH_LONG)
+//                    .setAction("Yup", v1 -> {
+//                        //delete product from realm
+//                        realm.executeTransaction(realm -> {
+//                            Product productToDelete = realm.where(Product.class).equalTo("id", product.getId()).findFirst();
+//                            productToDelete.deleteFromRealm();
+//                            notifyItemRemoved(position);
+//                        });
+//                    }).show();
         });
     }
 
