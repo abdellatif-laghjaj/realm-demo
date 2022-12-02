@@ -1,5 +1,7 @@
 package com.example.relamtp4;
 
+import static com.example.relamtp4.helper.Utils.checkIfNoProducts;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView productsRecyclerView;
     private ExtendedFloatingActionButton addProductButton;
     private ProductsAdapter productsAdapter;
-    private ImageView noProductsImage;
+    public static ImageView noProductsImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +50,7 @@ public class MainActivity extends AppCompatActivity {
         addProductButton = findViewById(R.id.add_product_fab);
         noProductsImage = findViewById(R.id.no_products);
 
-        //check if there is no products
-        if (fetchedProducts.size() == 0) {
-            noProductsImage.setVisibility(View.VISIBLE);
-        } else {
-            noProductsImage.setVisibility(View.GONE);
-        }
+        checkIfNoProducts(fetchedProducts, noProductsImage);
 
         productsAdapter = new ProductsAdapter(this, realm, fetchedProducts);
         productsRecyclerView.setAdapter(productsAdapter);
@@ -116,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
         }, () -> {
             Snackbar.make(productsRecyclerView, "Product added successfully", Snackbar.LENGTH_LONG).show();
             dialog.dismiss();
+            checkIfNoProducts(getProducts(), noProductsImage);
             //refresh products list
             productsAdapter.setProducts(getProducts());
         }, error -> {

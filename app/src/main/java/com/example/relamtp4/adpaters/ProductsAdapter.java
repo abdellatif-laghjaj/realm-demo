@@ -1,5 +1,7 @@
 package com.example.relamtp4.adpaters;
 
+import static com.example.relamtp4.helper.Utils.checkIfNoProducts;
+
 import android.app.Dialog;
 import android.content.Context;
 import android.view.View;
@@ -9,6 +11,7 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.relamtp4.MainActivity;
 import com.example.relamtp4.R;
 import com.example.relamtp4.models.Product;
 import com.google.android.material.snackbar.Snackbar;
@@ -49,6 +52,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
         holder.itemView.setOnClickListener(v -> {
             Dialog dialog = new Dialog(context);
             dialog.setContentView(R.layout.update_delete_product_dialog);
+
+            //make dialog full width
+            int width = ViewGroup.LayoutParams.MATCH_PARENT;
+            dialog.getWindow().setLayout(width, RecyclerView.LayoutParams.WRAP_CONTENT);
+
             dialog.setCancelable(true);
             dialog.show();
 
@@ -68,6 +76,7 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
                     Product productToDelete = realm.where(Product.class).equalTo("id", product.getId()).findFirst();
                     productToDelete.deleteFromRealm();
                     notifyItemRemoved(position);
+                    checkIfNoProducts(products, MainActivity.noProductsImage);
                     dialog.dismiss();
                 });
             });
