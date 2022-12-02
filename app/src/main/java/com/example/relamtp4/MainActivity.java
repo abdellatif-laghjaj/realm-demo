@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity {
                 double productPrice = Double.parseDouble(productPriceEditText.getText().toString());
                 int productImage = R.drawable.ic_launcher_background;
 
-                addProduct(productName, productPrice);
+                addProduct(productName, productPrice, dialog);
             });
 
             dialog.show();
@@ -101,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 //        realm.commitTransaction();
     }
 
-    private void addProduct(String name, double price) {
+    private void addProduct(String name, double price, Dialog dialog) {
         if (name.isEmpty() || price <= 0) {
             Snackbar.make(productsRecyclerView, "Invalid product name or price", Snackbar.LENGTH_LONG).show();
             return;
@@ -115,7 +115,9 @@ public class MainActivity extends AppCompatActivity {
             product.setImage(R.drawable.ic_launcher_background);
         }, () -> {
             Snackbar.make(productsRecyclerView, "Product added successfully", Snackbar.LENGTH_LONG).show();
-            productsAdapter.notifyDataSetChanged();
+            dialog.dismiss();
+            //refresh products list
+            productsAdapter.setProducts(getProducts());
         }, error -> {
             Snackbar.make(productsRecyclerView, "Error adding product", Snackbar.LENGTH_LONG).show();
         });
