@@ -47,14 +47,11 @@ public class ProductsAdapter extends RecyclerView.Adapter<ProductsAdapter.MyView
             Snackbar.make(v, "Are you sure you want to delete this product?", Snackbar.LENGTH_LONG)
                     .setAction("Yup", v1 -> {
                         //delete product from realm
-                        try {
-                            realm.executeTransaction(realm -> {
-                                Product productToDelete = realm.where(Product.class).equalTo("id", product.getId()).findFirst();
-                                productToDelete.deleteFromRealm();
-                            });
-                        } finally {
-                            realm.close();
-                        }
+                        realm.executeTransaction(realm -> {
+                            Product productToDelete = realm.where(Product.class).equalTo("id", product.getId()).findFirst();
+                            productToDelete.deleteFromRealm();
+                            notifyItemRemoved(position);
+                        });
                     }).show();
         });
     }

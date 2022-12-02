@@ -32,11 +32,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Realm.init(this);
         RealmConfiguration config = new RealmConfiguration.Builder()
                 .allowWritesOnUiThread(true)
                 .allowQueriesOnUiThread(true)
                 .build();
-        Realm.init(this);
         realm = Realm.getInstance(config);
 
         ArrayList<Product> fetchedProducts = getProducts();
